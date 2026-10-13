@@ -1,0 +1,7 @@
+project_id = "thangam-web"
+
+[functions.create-order]
+verify_jwt = false
+
+[functions.order-notifications]
+verify_jwt = false
