@@ -110,7 +110,7 @@ h3{font-weight:600}
 
 /* One source asset contains a desktop panel and a portrait mobile panel. */
 .hero-banner{max-width:1600px;margin:0 auto;background:#fff8e9}
-.hero-banner-art{position:relative;width:100%;aspect-ratio:1458/779;overflow:hidden;background:#2b1a10;isolation:isolate}
+.hero-banner-art{position:relative;width:100%;aspect-ratio:1458/779;overflow:hidden;background:#2b1a10;isolation:isolate;container-type:inline-size}
 .hero-banner-art img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
 .hero-banner-actions{display:flex;justify-content:center;gap:14px;align-items:center;padding:22px 20px;background:#fffaf0;border-bottom:1px solid #e6dfce}
 .hero-banner-actions .primary,.hero-banner-actions .secondary{font-size:14px;font-weight:600}
@@ -145,5 +145,27 @@ h3{font-weight:600}
 .hero-banner-carousel.holding .banner-dot i{animation-play-state:paused}
 @keyframes banner-progress{from{transform:scaleX(0)}to{transform:scaleX(1)}}
 .banner-pause{padding:2px 4px;color:#fff3cf}.banner-arrow:focus-visible,.banner-controls button:focus-visible{outline:2px solid #f8d986;outline-offset:4px}
+/* Live copy for the offer and quick-order slides; sized in cqw so it scales with the artwork. */
+.banner-slide:after{content:'';position:absolute;inset:0}
+.banner-slide.is-offer:after{background:linear-gradient(90deg,#160a24eb 0,#1a0c22b8 34%,#1a0c2200 68%)}
+.banner-slide.is-order:after{background:linear-gradient(270deg,#0d1f1680 0,#0d1f1600 55%)}
+.banner-copy{position:absolute;z-index:1;display:flex;flex-direction:column;align-items:flex-start;color:#fff8e6;opacity:0;visibility:hidden;transition:opacity .45s ease,visibility 0s .45s}
+.banner-copy.current{opacity:1;visibility:visible;transition:opacity .45s ease}
+.banner-copy>*{transform:translateY(16px);opacity:0;transition:transform .7s cubic-bezier(.2,.7,.2,1),opacity .7s ease}
+.banner-copy.current>*{transform:none;opacity:1}
+.banner-copy.current>:nth-child(1){transition-delay:.35s}.banner-copy.current>:nth-child(2){transition-delay:.45s}.banner-copy.current>:nth-child(3){transition-delay:.55s}.banner-copy.current>:nth-child(4){transition-delay:.65s}.banner-copy.current>:nth-child(5){transition-delay:.75s}
+.banner-eyebrow{display:inline-flex;align-items:center;gap:.6em;font-size:max(11px,1.05cqw);font-weight:700;letter-spacing:.26em;text-transform:uppercase;color:#f7d787}
+.banner-copy .banner-lead{font-size:max(14px,1.9cqw);line-height:1.35;font-weight:500;color:#fff8e6}
+.banner-cta{display:inline-flex;align-items:center;gap:.8em;margin-top:1.7em;padding:1em 1.7em;border-radius:999px;background:linear-gradient(180deg,#ffe9a8,#f2c35c);color:#1d3324;font-size:max(12px,1.1cqw);font-weight:700;box-shadow:0 .5em 1.6em #0000004d}
+.banner-cta:hover{background:linear-gradient(180deg,#fff4d0,#f8d27c)}.banner-cta:focus-visible{outline:2px solid #fff;outline-offset:4px}
+.banner-copy small{margin-top:1.5em;font-size:max(10px,.85cqw);color:#fff8e6b3}
+.banner-copy.is-offer{left:7cqw;top:50%;translate:0 -54%;width:44cqw}
+.banner-offer{font-size:11cqw;font-weight:800;line-height:.95;letter-spacing:-.04em;margin:.1em 0 .06em;background:linear-gradient(180deg,#fff6d6 0,#f7d787 45%,#d99a3a 100%);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 .03em .06em #00000080)}
+.banner-offer em{display:block;font-style:normal;font-weight:300;letter-spacing:-.01em}
+.banner-copy.is-order{right:7cqw;top:50%;translate:0 -54%;width:36cqw;padding:3cqw;border-radius:1.6cqw;background:#10261bbd;border:1px solid #ffe6a859;backdrop-filter:blur(14px) saturate(1.2);box-shadow:0 1.5cqw 4cqw #00000059}
+.banner-title{font-size:4.6cqw;font-weight:700;line-height:1.05;letter-spacing:-.03em;margin:.25em 0 .3em;color:#fff6d6}
+.banner-copy.is-order .banner-eyebrow{letter-spacing:.14em}.banner-copy.is-order .banner-lead{font-size:max(12px,1.15cqw);font-weight:400;line-height:1.6;color:#fff8e6d9}
+.banner-chips{list-style:none;padding:0;margin:1.5cqw 0 0;display:flex;flex-wrap:wrap;gap:.6cqw}.banner-chips li{display:inline-flex;align-items:center;gap:.5em;padding:.5em .9em;border-radius:999px;border:1px solid #ffe6a84d;background:#ffffff14;font-size:max(10px,.9cqw);color:#fff3cf}
+@media(max-width:760px){.banner-slide.is-offer:after{background:linear-gradient(180deg,#160a24f0 0,#1a0c22c7 46%,#1a0c2200 72%)}.banner-slide.is-order:after{background:none}.banner-copy.is-offer{left:8cqw;right:8cqw;width:auto;top:10cqw;translate:none;align-items:center;text-align:center}.banner-eyebrow{font-size:2.9cqw}.banner-offer{font-size:20cqw;line-height:.9}.banner-copy .banner-lead{font-size:4.6cqw}.banner-cta{font-size:3.5cqw;margin-top:1.4em}.banner-copy small{font-size:2.8cqw;margin-top:1.1em;color:#fff8e6d9}.banner-copy.is-order{left:7cqw;right:7cqw;width:auto;top:11cqw;translate:none;padding:6cqw;border-radius:4cqw}.banner-title{font-size:10.5cqw}.banner-copy.is-order .banner-lead{display:none}.banner-chips{margin-top:2cqw;gap:1.6cqw}.banner-chips li{font-size:2.8cqw}}
 @media(hover:hover) and (min-width:761px){.banner-arrow{opacity:0}.hero-banner-carousel:hover .banner-arrow,.banner-arrow:focus-visible{opacity:1}}
-@media(max-width:760px){.banner-burst{left:var(--mx);top:var(--my);width:calc(34%*var(--size))}.banner-burst>span{height:1.5px}@keyframes banner-ember{0%{transform:translate3d(0,0,0);opacity:0}12%{opacity:.9}70%{opacity:.5}100%{transform:translate3d(var(--sway),-75vw,0);opacity:0}}.banner-frame{inset:8px}.banner-arrow{width:36px;height:36px}.banner-arrow.previous{left:16px}.banner-arrow.next{right:16px}.banner-controls{bottom:18px;padding:7px 12px}.banner-dot.selected{width:34px}}
+@media(max-width:760px){.banner-burst{left:var(--mx);top:var(--my);width:calc(34%*var(--size))}.banner-burst>span{height:1.5px}@keyframes banner-ember{0%{transform:translate3d(0,0,0);opacity:0}12%{opacity:.9}70%{opacity:.5}100%{transform:translate3d(var(--sway),-75vw,0);opacity:0}}.banner-frame{inset:8px}.banner-arrow{width:36px;height:36px;top:auto;bottom:18px;transform:none}.banner-arrow.previous,.banner-arrow.previous:hover{left:18px;transform:none}.banner-arrow.next,.banner-arrow.next:hover{right:18px;transform:none}.banner-controls{bottom:18px;padding:7px 12px}.banner-dot.selected{width:34px}}
