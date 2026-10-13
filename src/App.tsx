@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { ArrowRight, ArrowUpRight, Check, Flame, Flower2, LoaderCircle, Menu, Minus, Package, Phone, Plus, Search, ShieldCheck, ShoppingBag, Sparkles, Star, Truck, X } from 'lucide-react'
-import { money, salePrice, supabase } from './lib/catalog'
+import { money, salePrice, supabase, supabaseUrl, supabasePublishableKey, useSupabaseCheckout } from './lib/catalog'
 import type { Category, Product } from './lib/catalog'
 import QuickOrder from './QuickOrder'
 import LogoFireworks from './LogoFireworks'
@@ -112,9 +112,9 @@ export default function App() {
     const customer=Object.fromEntries(fields.entries())
     requestId.current ??= crypto.randomUUID()
     try {
-      const edgeCheckout=import.meta.env.VITE_USE_SUPABASE_CHECKOUT==='true'
-      const endpoint=edgeCheckout?`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/create-order`:'/api/orders'
-      const response = await fetch(endpoint,{ method:'POST',headers:{'Content-Type':'application/json',...(edgeCheckout?{apikey:import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}:{})},body:JSON.stringify({customer,request_id:requestId.current,items:cartItems.map(item=>({product_id:item.product.id,quantity:item.quantity}))}) })
+      const edgeCheckout=useSupabaseCheckout
+      const endpoint=edgeCheckout?`${supabaseUrl}/functions/v1/create-order`:'/api/orders'
+      const response = await fetch(endpoint,{ method:'POST',headers:{'Content-Type':'application/json',...(edgeCheckout?{apikey:supabasePublishableKey}:{})},body:JSON.stringify({customer,request_id:requestId.current,items:cartItems.map(item=>({product_id:item.product.id,quantity:item.quantity}))}) })
       const data = await response.json()
       if (!response.ok) throw new Error(data.error??'Order could not be submitted. Please try again.')
       setReceipt(data); setCart({}); setCheckout(false); requestId.current=null
