@@ -8,7 +8,7 @@ In the website's private `.env`, set:
 
 ```env
 SUPABASE_ACCESS_TOKEN=your-supabase-personal-access-token
-RESEND_API_KEY=YOUR_RESEND_API_KEY
+RESEND_API_KEY=your_resend_api_key_here
 RESEND_FROM=Thangam Traders <orders@your-verified-domain.com>
 ORDER_NOTIFICATION_EMAIL=thangamcrackersonline@gmail.com
 ALLOWED_ORIGINS=http://localhost:5173,http://localhost:5174,https://your-website.pages.dev,https://your-website-domain.com
