@@ -110,10 +110,40 @@ h3{font-weight:600}
 
 /* One source asset contains a desktop panel and a portrait mobile panel. */
 .hero-banner{max-width:1600px;margin:0 auto;background:#fff8e9}
-.hero-banner-art{position:relative;width:100%;aspect-ratio:1458/779;overflow:hidden}
-.hero-banner-art img{position:absolute;top:0;left:0;width:138.4774%;height:100%;max-width:none;display:block}
+.hero-banner-art{position:relative;width:100%;aspect-ratio:1458/779;overflow:hidden;background:#2b1a10;isolation:isolate}
+.hero-banner-art img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
 .hero-banner-actions{display:flex;justify-content:center;gap:14px;align-items:center;padding:22px 20px;background:#fffaf0;border-bottom:1px solid #e6dfce}
 .hero-banner-actions .primary,.hero-banner-actions .secondary{font-size:14px;font-weight:600}
-@media(max-width:760px){.hero-banner-art{aspect-ratio:545/779}.hero-banner-art img{left:auto;right:0;width:370.459%;height:100%}.hero-banner-actions{padding:17px 14px;gap:10px}.hero-banner-actions .primary,.hero-banner-actions .secondary{font-size:12px;padding:12px 14px;gap:10px}}
+@media(max-width:760px){.hero-banner-art{aspect-ratio:545/779}.hero-banner-actions{padding:17px 14px;gap:10px}.hero-banner-actions .primary,.hero-banner-actions .secondary{font-size:12px;padding:12px 14px;gap:10px}}
 
-.hero-banner-carousel{position:relative}.hero-banner-art .banner-slide{width:var(--banner-desktop-width);opacity:0;transition:opacity .7s ease;pointer-events:none}.hero-banner-art .banner-slide.current{opacity:1}.banner-arrow{position:absolute;top:50%;transform:translateY(-50%);width:42px;height:42px;border-radius:50%;background:#173b2bc9;color:white;box-shadow:0 3px 14px #0002}.banner-arrow:hover{background:#173b2b}.banner-arrow.previous{left:18px}.banner-arrow.next{right:18px}.banner-controls{position:absolute;bottom:16px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:10px;background:#173b2bc9;border-radius:30px;padding:8px 14px;color:white}.banner-dot{width:10px;height:10px;border-radius:50%;padding:0;background:#ffffff66}.banner-dot.selected{background:#f7d787}.banner-pause{padding:2px 4px;color:#fff}.banner-arrow:focus-visible,.banner-controls button:focus-visible{outline:2px solid #f8d986;outline-offset:4px}@media(max-width:760px){.hero-banner-art .banner-slide{width:var(--banner-mobile-width)}.banner-arrow{width:34px;height:34px}.banner-arrow.previous{left:10px}.banner-arrow.next{right:10px}.banner-controls{bottom:12px}}
+.hero-banner-carousel{position:relative}
+.banner-slide{position:absolute;inset:0;opacity:0;transition:opacity 1s ease;pointer-events:none}.banner-slide.current{opacity:1}
+/* Slow push-in while a slide is showing; it resets only after the slide has faded out. */
+.banner-slide img{transform:scale(1);transition:transform 1.2s ease 1s}.banner-slide.current img{transform:scale(1.055);transition:transform 9s cubic-bezier(.2,.5,.3,1)}
+@starting-style{.banner-slide.current img{transform:scale(1)}}
+.banner-sky,.banner-embers,.banner-vignette,.banner-shine,.banner-frame{position:absolute;inset:0;pointer-events:none}
+.banner-sky{mix-blend-mode:screen}
+.banner-burst{position:absolute;left:var(--x);top:var(--y);width:calc(15%*var(--size));aspect-ratio:1;transform:translate(-50%,-50%)}
+.banner-burst:before{content:'';position:absolute;inset:38%;border-radius:50%;background:radial-gradient(circle,#fff 0,var(--color) 35%,transparent 70%);opacity:0;animation:banner-flash 6.5s ease-out var(--delay) infinite}
+.banner-burst>span{position:absolute;left:50%;top:50%;width:50%;height:2px;margin-top:-1px;transform-origin:0 50%}
+.banner-burst i{position:absolute;inset:0;border-radius:2px;background:linear-gradient(90deg,transparent 15%,var(--color) 85%,#fff);transform-origin:0 50%;opacity:0;animation:banner-ray 6.5s cubic-bezier(.1,.7,.3,1) var(--delay) infinite}
+.banner-burst i:after{content:'';position:absolute;right:-2px;top:-2px;width:6px;height:6px;border-radius:50%;background:#fff;box-shadow:0 0 9px 3px var(--color)}
+.banner-burst>span:nth-child(even){width:36%}
+@keyframes banner-ray{0%{transform:scaleX(0);opacity:0}3%{opacity:1}17%{transform:scaleX(1);opacity:1}30%,100%{transform:scaleX(1.1);opacity:0}}
+@keyframes banner-flash{0%{transform:scale(.2);opacity:0}4%{transform:scale(1.6);opacity:.9}16%,100%{transform:scale(2.4);opacity:0}}
+.banner-embers span{position:absolute;bottom:-3%;border-radius:50%;background:#ffe7a8;box-shadow:0 0 8px 2px #ffb64aa6;opacity:0;animation:banner-ember linear infinite}
+@keyframes banner-ember{0%{transform:translate3d(0,0,0);opacity:0}12%{opacity:.9}70%{opacity:.5}100%{transform:translate3d(var(--sway),-24vw,0);opacity:0}}
+.banner-vignette{background:radial-gradient(ellipse at 50% 42%,transparent 52%,#1a0d0552 100%),linear-gradient(to top,#150a0499 0,transparent 24%)}
+.banner-shine{background:linear-gradient(105deg,transparent 40%,#fff5d638 50%,transparent 60%);transform:translateX(-110%);animation:banner-shine 1.6s ease-out .25s 1 both}
+@keyframes banner-shine{to{transform:translateX(110%)}}
+.banner-frame{inset:12px;border:1px solid #ffe6a86b;border-radius:6px;box-shadow:inset 0 0 0 1px #5a34101f}
+.banner-arrow{position:absolute;top:50%;transform:translateY(-50%);width:46px;height:46px;border-radius:50%;background:#12291d8c;border:1px solid #ffe6a880;color:#fff3cf;backdrop-filter:blur(8px);box-shadow:0 6px 22px #0000003d;transition:background .2s,transform .2s,opacity .25s}
+.banner-arrow:hover{background:#173b2be6}.banner-arrow.previous{left:28px}.banner-arrow.next{right:28px}.banner-arrow.previous:hover{transform:translateY(-50%) translateX(-3px)}.banner-arrow.next:hover{transform:translateY(-50%) translateX(3px)}
+.banner-controls{position:absolute;bottom:26px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:9px;background:#12291d8c;border:1px solid #ffe6a84d;backdrop-filter:blur(8px);border-radius:30px;padding:9px 14px;color:white;box-shadow:0 6px 22px #0000003d}
+.banner-dot{position:relative;overflow:hidden;width:10px;height:10px;border-radius:10px;padding:0;background:#ffffff5c;transition:width .35s ease,background .2s}.banner-dot:hover{background:#ffffffa6}.banner-dot.selected{width:44px;background:#ffffff40}
+.banner-dot i{position:absolute;inset:0;border-radius:inherit;background:linear-gradient(90deg,#f7d787,#ffefc2);transform-origin:0 50%;animation:banner-progress 8s linear forwards}
+.hero-banner-carousel.holding .banner-dot i{animation-play-state:paused}
+@keyframes banner-progress{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+.banner-pause{padding:2px 4px;color:#fff3cf}.banner-arrow:focus-visible,.banner-controls button:focus-visible{outline:2px solid #f8d986;outline-offset:4px}
+@media(hover:hover) and (min-width:761px){.banner-arrow{opacity:0}.hero-banner-carousel:hover .banner-arrow,.banner-arrow:focus-visible{opacity:1}}
+@media(max-width:760px){.banner-burst{left:var(--mx);top:var(--my);width:calc(34%*var(--size))}.banner-burst>span{height:1.5px}@keyframes banner-ember{0%{transform:translate3d(0,0,0);opacity:0}12%{opacity:.9}70%{opacity:.5}100%{transform:translate3d(var(--sway),-75vw,0);opacity:0}}.banner-frame{inset:8px}.banner-arrow{width:36px;height:36px}.banner-arrow.previous{left:16px}.banner-arrow.next{right:16px}.banner-controls{bottom:18px;padding:7px 12px}.banner-dot.selected{width:34px}}
