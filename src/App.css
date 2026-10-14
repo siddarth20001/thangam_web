@@ -223,3 +223,10 @@ p{font-size:16px;line-height:1.8}
 /* Focus the complete search field, including its icon. */
 .shop-tools .search:focus-within{border-color:#729565;outline:2px solid #729565;outline-offset:2px}
 .shop-tools .search input:focus{outline:none;box-shadow:none}
+
+/* Reserve actual fixed-summary height after the footer, including mobile safe areas. */
+body.quick-order-active{padding-bottom:calc(var(--quick-total-height,100px) + 24px)}
+.quick-order-active .quick-order{padding-bottom:45px}
+.quick-total-bar{padding-bottom:calc(18px + env(safe-area-inset-bottom,0px))}
+body.quick-order-active .whatsapp-contact{bottom:calc(var(--quick-total-height,100px) + 20px)}
+@media(max-width:760px){.quick-total-bar{padding-bottom:calc(13px + env(safe-area-inset-bottom,0px))}}
