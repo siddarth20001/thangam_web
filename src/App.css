@@ -215,3 +215,5 @@ p{font-size:16px;line-height:1.8}
 .quick-quantity input{width:36px;padding:5px 0;font-size:14px;line-height:20px}
 .quick-quantity button svg{width:12px;height:12px}
 @media(max-width:760px){.quick-quantity{width:88px}.quick-quantity button{width:26px;min-height:32px;padding:5px}.quick-quantity input{width:34px;font-size:16px;line-height:20px}}
+
+.quick-add{width:94px;min-height:32px;border-radius:5px;background:#244d35;color:#fff;font-size:12px;font-weight:600;letter-spacing:.5px;padding:6px 12px}.quick-add:hover{background:#183b26}@media(max-width:760px){.quick-add{width:88px}}
