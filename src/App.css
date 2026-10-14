@@ -230,3 +230,9 @@ body.quick-order-active{padding-bottom:calc(var(--quick-total-height,100px) + 24
 .quick-total-bar{padding-bottom:calc(18px + env(safe-area-inset-bottom,0px))}
 body.quick-order-active .whatsapp-contact{bottom:calc(var(--quick-total-height,100px) + 20px)}
 @media(max-width:760px){.quick-total-bar{padding-bottom:calc(13px + env(safe-area-inset-bottom,0px))}}
+
+/* Give product-card quantity controls the same colours as Quick Order. */
+.product-card .quantity button:first-child{background:#fbe0dc;color:#a64e43;border-radius:3px 0 0 3px}
+.product-card .quantity button:first-child:hover{background:#f5c9c2}
+.product-card .quantity button:last-child{background:#244d35;color:#fff;border-radius:0 3px 3px 0}
+.product-card .quantity button:last-child:hover:not(:disabled){background:#173d28}
