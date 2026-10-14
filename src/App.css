@@ -180,7 +180,7 @@ p{font-size:16px;line-height:1.8}
 .product-category{font-size:11px;line-height:1.5}.unit{font-size:13px}
 .product-bottom{flex-wrap:wrap;row-gap:10px}.product-bottom strong{font-size:20px}.product-bottom del{font-size:13px}
 .add-button{font-size:13px;padding:9px 12px}.quantity{font-size:14px}.quantity button{padding:9px}.quantity span{min-width:22px}
-.offer{font-size:11px;padding:6px 9px}.product-code{font-size:11px}
+.offer{font-size:11px;padding:6px 9px;color:#173d28;font-weight:700}.product-code{font-size:11px}
 .story-copy p,.steps p,.branches p{font-size:16px}.steps h3{font-size:19px}.text-link{font-size:15px}
 .site-footer p,.site-footer>div:nth-child(2),.footer-end{font-size:14px}.site-footer>div:nth-child(2)>span{font-size:11px}.footer-end small{font-size:12px}
 .quick-table{font-size:15px}.quick-table th{font-size:12px}.quick-table small,.quick-table del{font-size:13px}.quick-quantity input{font-size:16px}
