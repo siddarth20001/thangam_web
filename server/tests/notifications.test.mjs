@@ -34,6 +34,6 @@ test('HTML template escapes customer and product input',()=>{
  assert.match(message.html,/&lt;script&gt;/)
  assert.ok(!message.html.includes('<script>'))
  assert.ok(!message.html.includes('<img src=x'))
- assert.match(message.html,/Cash on Delivery/)
+ assert.doesNotMatch(`${message.subject} ${message.html} ${message.text}`,/\bCOD\b|Cash on Delivery/i)
  assert.match(message.html,/QTY/)
 })
