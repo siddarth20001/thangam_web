@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import type { CSSProperties } from 'react'
-import { ArrowRight, ArrowUpRight, Banknote, ChevronLeft, ChevronRight, Pause, Play, Sparkles, Truck } from 'lucide-react'
+import { ArrowRight, ArrowUpRight, ChevronLeft, ChevronRight, Pause, Play, Sparkles, Truck } from 'lucide-react'
 const banners = [
   // Each banner ships as a landscape (desktop) and portrait (mobile) crop in /public/banners.
   // Only the brand slide has the logo painted in; the other two are clean scenes with live copy laid over them.
@@ -48,7 +48,7 @@ export default function HeroBanners({ onQuickOrder }: { onQuickOrder: () => void
         <span className="banner-eyebrow">Your entire collection, in one list</span>
         <strong className="banner-title">Quick Order</strong>
         <p className="banner-lead">Select your favourites and set quantities. Your bag and total update automatically.</p>
-        <ul className="banner-chips"><li><Banknote size={15}/>Cash on Delivery</li><li><Truck size={15}/>Delivery across Tamil Nadu</li></ul>
+        <ul className="banner-chips"><li><Truck size={15}/>Delivery across Tamil Nadu</li></ul>
         <a className="banner-cta" href="/quick-order" onClick={event=>{event.preventDefault();onQuickOrder()}}>Start Quick Order <ArrowUpRight size={17}/></a>
       </div>
     </div>
