@@ -1,6 +1,10 @@
 import { randomUUID } from 'node:crypto'
 const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
 export class CheckoutError extends Error { constructor(message, status = 400) { super(message); this.status = status } }
+const minimumOrderCents = 200000
+export function assertMinimumOrder(totalCents) {
+  if (totalCents < minimumOrderCents) throw new CheckoutError('Minimum order value is ₹2,000.')
+}
 function text(value, min, max, label) {
   if (typeof value !== 'string' || value.trim().length < min || value.trim().length > max) throw new CheckoutError(`Enter a valid ${label}.`)
   return value.trim()
@@ -46,6 +50,7 @@ export async function createOrder(pool, body) {
     })
     const totalCents = items.reduce((total, item) => total + item.totalCents, 0)
     if (!Number.isSafeInteger(totalCents) || totalCents > 999999999999) throw new CheckoutError('Order total is too large.')
+    assertMinimumOrder(totalCents)
     const id = randomUUID()
     const { rows: order } = await client.query(`insert into public.orders(id, customer_name, customer_phone, customer_email, total, delivery_address, delivery_city, delivery_pincode, request_id) values($1,$2,$3,$4,$5,$6,$7,$8,$9) returning order_number`, [id,input.name,input.phone,input.email,totalCents/100,input.address,input.city,input.pincode,input.request_id])
     for (const item of items) await client.query(`insert into public.order_items(order_id,product_id,product_name,unit,quantity,original_price,discount_percent,unit_price,line_total) values($1,$2,$3,$4,$5,$6,$7,$8,$9)`, [id,item.product.id,item.product.name,item.product.unit,item.quantity,item.product.price,item.discount,item.cents/100,item.totalCents/100])

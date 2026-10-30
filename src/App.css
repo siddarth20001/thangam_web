@@ -236,3 +236,4 @@ body.quick-order-active .whatsapp-contact{bottom:calc(var(--quick-total-height,1
 .product-card .quantity button:first-child:hover{background:#f5c9c2}
 .product-card .quantity button:last-child{background:#244d35;color:#fff;border-radius:0 3px 3px 0}
 .product-card .quantity button:last-child:hover:not(:disabled){background:#173d28}
+.minimum-notice{border:1px solid #e8d9b0;background:#fbf4e1;color:#6b5213;padding:11px 13px;border-radius:5px;font-size:14px;margin:0 0 12px}
