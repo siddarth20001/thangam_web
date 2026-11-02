@@ -5,3 +5,6 @@ verify_jwt = false
 
 [functions.order-notifications]
 verify_jwt = false
+
+[functions.order-pdf]
+verify_jwt = false

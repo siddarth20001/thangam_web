@@ -2,6 +2,7 @@ import {createPool} from '../_shared/database.ts'
 import {deliverNext} from '../_shared/notifications.js'
 import {emailConfig,resendTransport} from '../_shared/resend.ts'
 import {orderPdfAttachment} from '../_shared/order-pdf-attachment.ts'
+import {orderPdfUrl} from '../_shared/order-link.js'
 Deno.serve(async request=>{
   const secret=Deno.env.get('EMAIL_WORKER_SECRET')
   if(!secret||request.headers.get('x-email-worker-secret')!==secret)return Response.json({error:'Unauthorized'},{status:401})
@@ -10,7 +11,7 @@ Deno.serve(async request=>{
   try{
     const config=emailConfig();pool=createPool()
     let processed=0
-    while(processed<5&&await deliverNext(pool,config,resendTransport(config),{attachPdf:orderPdfAttachment}))processed++
+    while(processed<5&&await deliverNext(pool,config,resendTransport(config),{attachPdf:orderPdfAttachment,pdfUrl:(order:{id:string})=>orderPdfUrl(Deno.env.get('SUPABASE_URL')??'',order.id,secret)}))processed++
     return Response.json({processed})
   }catch(error){console.error('Email worker unavailable:',error instanceof Error?error.name:'Error');return Response.json({error:'Email worker unavailable. Check function secrets and logs.'},{status:503})}
   finally{await pool?.end()}

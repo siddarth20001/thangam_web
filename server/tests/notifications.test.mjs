@@ -3,6 +3,7 @@ import assert from 'node:assert/strict'
 import { deliverNext, notificationConfig, orderMessage } from '../notifications.mjs'
 import { orderPdf } from '../../supabase/functions/_shared/order-pdf.js'
 import { deliverNext as edgeDeliverNext } from '../../supabase/functions/_shared/notifications.js'
+import { orderPdfUrl, verifyOrderSignature } from '../../supabase/functions/_shared/order-link.js'
 const order = { order_number: 12, customer_name: 'Customer', customer_phone: '9000000000', total: 40, delivery_address: 'Street', delivery_city: 'Madurai', delivery_pincode: '625001' }
 const items = [{ product_name: 'Sparkler', unit: '1 Box', quantity: 2, unit_price: 20, line_total: 40 }]
 const config = { to: 'receiver@example.com', from: 'sender@example.com' }
@@ -54,4 +55,18 @@ test('edge worker attaches the order PDF and still sends when the PDF fails', as
   assert.equal(sent.length, 1)
   assert.match(updates[0].sql, /status='sent'/)
  }
+})
+test('email download link is signed per order and shows as a button', async () => {
+ const id = '6f1c2b8e-3a4d-4e5f-9a1b-2c3d4e5f6a7b', other = '7f1c2b8e-3a4d-4e5f-9a1b-2c3d4e5f6a7b'
+ const url = await orderPdfUrl('https://example.supabase.co', id, 'secret')
+ const signature = new URL(url).searchParams.get('sig')
+ assert.ok(await verifyOrderSignature(id, signature, 'secret'))
+ assert.ok(!await verifyOrderSignature(other, signature, 'secret'))
+ assert.ok(!await verifyOrderSignature(id, signature, 'other secret'))
+ assert.ok(!await verifyOrderSignature(id, 'not-a-signature', 'secret'))
+ const message = orderMessage(order, items, config, { pdfUrl: url })
+ assert.match(message.html, /Download order PDF/)
+ assert.ok(message.html.includes(url.replace('&', '&amp;')))
+ assert.match(message.text, /Download order PDF: https:/)
+ assert.doesNotMatch(orderMessage(order, items, config).html, /Download order PDF/)
 })
