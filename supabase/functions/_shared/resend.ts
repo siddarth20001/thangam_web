@@ -4,7 +4,7 @@ export function emailConfig() {
   return {key,from,to}
 }
 export function resendTransport(config: ReturnType<typeof emailConfig>) {
-  return { async sendMail(message: { from: string; to: string; subject: string; html: string; text: string; notificationKey: string }) {
+  return { async sendMail(message: { from: string; to: string; subject: string; html: string; text: string; notificationKey: string; attachments?: { filename: string; content: string }[] }) {
     const {notificationKey,...body}=message
     const response=await fetch('https://api.resend.com/emails',{method:'POST',headers:{Authorization:`Bearer ${config.key}`,'Content-Type':'application/json','Idempotency-Key':notificationKey},body:JSON.stringify(body),signal:AbortSignal.timeout(15000)})
     if(!response.ok) throw new Error(`Resend HTTP ${response.status}`)

@@ -1,6 +1,8 @@
 import { test } from 'node:test'
 import assert from 'node:assert/strict'
 import { deliverNext, notificationConfig, orderMessage } from '../notifications.mjs'
+import { orderPdf } from '../../supabase/functions/_shared/order-pdf.js'
+import { deliverNext as edgeDeliverNext } from '../../supabase/functions/_shared/notifications.js'
 const order = { order_number: 12, customer_name: 'Customer', customer_phone: '9000000000', total: 40, delivery_address: 'Street', delivery_city: 'Madurai', delivery_pincode: '625001' }
 const items = [{ product_name: 'Sparkler', unit: '1 Box', quantity: 2, unit_price: 20, line_total: 40 }]
 const config = { to: 'receiver@example.com', from: 'sender@example.com' }
@@ -36,4 +38,20 @@ test('HTML template escapes customer and product input',()=>{
  assert.ok(!message.html.includes('<img src=x'))
  assert.doesNotMatch(`${message.subject} ${message.html} ${message.text}`,/\bCOD\b|Cash on Delivery/i)
  assert.match(message.html,/QTY/)
+})
+test('order PDF lists every product and survives long orders and non-Latin names', async () => {
+ const PDFLib = await import('pdf-lib')
+ const many = Array.from({ length: 60 }, (_, index) => ({ product_name: `${index ? 'Product' : 'மத்தாப்பு with a very long name that must be shortened to fit the column'} ${index}`, unit: '1 Box', quantity: 2, unit_price: 20, line_total: 40 }))
+ const pdf = await orderPdf({ ...order, customer_name: 'தங்கம் Customer', total: 2400, created_at: '2026-11-02T10:00:00Z' }, many, PDFLib)
+ assert.equal(pdf.filename, 'Thangam-order-0012.pdf')
+ const document = await PDFLib.PDFDocument.load(Buffer.from(pdf.content, 'base64'))
+ assert.ok(document.getPageCount() >= 2)
+})
+test('edge worker attaches the order PDF and still sends when the PDF fails', async () => {
+ for (const attachPdf of [async () => ({ filename: 'order.pdf', content: 'JVBERg==' }), async () => { throw new Error('PDF broke') }]) {
+  const { pool, updates } = fakeQueue(), sent = []
+  await edgeDeliverNext(pool, config, { sendMail: async message => { sent.push(message); return { accepted: [config.to], rejected: [] } } }, { attachPdf })
+  assert.equal(sent.length, 1)
+  assert.match(updates[0].sql, /status='sent'/)
+ }
 })

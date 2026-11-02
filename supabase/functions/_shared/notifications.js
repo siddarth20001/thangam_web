@@ -1,6 +1,6 @@
 export { orderMessage } from './order-template.js'
 import { orderMessage } from './order-template.js'
-export async function deliverNext(pool, config, transport) {
+export async function deliverNext(pool, config, transport, { attachPdf } = {}) {
   const client = await pool.connect()
   try {
     await client.query('BEGIN')
@@ -9,7 +9,10 @@ export async function deliverNext(pool, config, transport) {
     const { rows: [order] } = await client.query('select * from public.orders where id=$1', [job.order_id])
     const { rows: items } = await client.query('select * from public.order_items where order_id=$1 order by product_name', [job.order_id])
     try {
-      const result = await transport.sendMail(orderMessage(order, items, config))
+      const message = orderMessage(order, items, config)
+      // A PDF failure must never hold back the order email itself.
+      if (attachPdf) try { message.attachments = [await attachPdf(order, items)] } catch { console.error('Order PDF could not be created; sending email without it.') }
+      const result = await transport.sendMail(message)
       if (result.rejected?.length || !result.accepted?.length) throw new Error('Recipient rejected')
       await client.query("update public.order_email_notifications set status='sent',sent_at=now(),attempts=attempts+1 where order_id=$1",[job.order_id])
     } catch {
